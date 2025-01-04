@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ia_front/util/constants.dart';
 
-class NavRail extends StatelessWidget {
+class CustomNavRail extends StatelessWidget {
   final int selectedScreen;
   final Function(int) onDestinationSelected;
 
-  const NavRail({
+  const CustomNavRail({
     super.key,
     required this.selectedScreen,
     required this.onDestinationSelected,
@@ -13,8 +14,8 @@ class NavRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationRail(
-      backgroundColor: Colors.blue,
-      indicatorColor: Colors.white,
+      backgroundColor: cardColor,
+      indicatorColor: primaryColor,
       selectedIndex: selectedScreen,
       onDestinationSelected: onDestinationSelected,
       destinations: const [
@@ -23,7 +24,7 @@ class NavRail extends StatelessWidget {
             Icons.car_rental,
             size: 30,
           ),
-          label: Text('Avaluar'),
+          label: Text('Valuar'),
         ),
         NavigationRailDestination(
           icon: Icon(
@@ -37,19 +38,18 @@ class NavRail extends StatelessWidget {
       selectedLabelTextStyle: const TextStyle(
         color: Colors.white,
       ),
+      selectedIconTheme: const IconThemeData(
+        color: cardColor,
+      ),
       leading: const Column(
         children: [
           SizedBox(
             height: 10,
           ),
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: 35,
-            child: Icon(
-              Icons.calculate_sharp,
-              size: 45,
-              color: Colors.white,
-            ),
+          Icon(
+            Icons.calculate_sharp,
+            size: 100,
+            color: primaryColor,
           ),
           SizedBox(
             height: 10,
