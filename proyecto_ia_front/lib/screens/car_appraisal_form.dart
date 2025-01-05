@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_ia_front/models/car.dart';
@@ -14,23 +16,139 @@ class CarAppraisalForm extends StatefulWidget {
 class _CarAppraisalFormState extends State<CarAppraisalForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String marca = 'Marca 1';
-  String modelo = 'Modelo 1';
-  String anio = '2025';
-  String combustible = 'Gasolina';
-  String clase = 'Clase 1';
-  String canton = 'Cantón 1';
-  String pais = 'País 1';
-  String color = 'Color 1';
-  String persona = 'Tipo Persona 1';
-  String tipo = 'Tipo 1';
-  String tipoServicio = 'Tipo Servicio 1';
-  String tipoTransaccion = 'Tipo Transacción 1';
+  List<String> marcas = [];
+  List<String> modelos = [];
+  List<String> anios = [];
+  List<String> clases = [];
+  List<String> combustibles = [];
+  List<String> paises = [];
+  List<String> cantones = [];
+  List<String> colores = [];
+  List<String> personas = [];
+  List<String> tipos = [];
+  List<String> tiposServicio = [];
+  List<String> tiposTransaccion = [];
+  
+  Car? car;
+  String? marca;
+  String? modelo;
+  String? anio;
+  String? combustible;
+  String? clase;
+  String? canton;
+  String? pais;
+  String? color;
+  String? persona;
+  String? tipo;
+  String? tipoServicio;
+  String? tipoTransaccion;
   DateTime? fechaCompra;
   String? fechaCompraError;
   int cilindraje = 0;
   final TextEditingController cilindrajeController = TextEditingController();
-  Car? car;
+  String avaluoEstimado = '-';
+
+  @override
+  void initState() {
+    super.initState();
+    loadFeatures(); // Cargar las listas de valores al inicio
+  }
+
+  Future<void> loadFeatures() async {
+    final fetchedMarcas = await fetchFeatures('MARCA');
+    final fetchedAnios = await fetchFeatures('AÑO MODELO');
+    final fetchedClases = await fetchFeatures('CLASE');
+    final fetchedCombustibles = await fetchFeatures('TIPO COMBUSTIBLE');
+    final fetchedPaises = await fetchFeatures('PAÍS');
+    final fetchedCantones = await fetchFeatures('CANTÓN');
+    final fetchedColores = await fetchFeatures('COLOR 1');
+    final fetchedPersonas = await fetchFeatures('PERSONA NATURAL - JURÍDICA');
+    final fetchedTipos = await fetchFeatures('TIPO');
+    final fetchedTiposServicio = await fetchFeatures('TIPO SERVICIO');
+    final fetchedTiposTransaccion = await fetchFeatures('TIPO TRANSACCIÓN');
+
+    setState(() {
+      marcas = fetchedMarcas;
+      if (marcas.isNotEmpty) marca = marcas.first;
+      updateModels(marca!);
+
+      anios = fetchedAnios;
+      if (anios.isNotEmpty) anio = anios.first;
+
+      clases = fetchedClases;
+      if (clases.isNotEmpty) clase = clases.first;
+
+      combustibles = fetchedCombustibles;
+      if (combustibles.isNotEmpty) combustible = combustibles.first;
+
+      paises = fetchedPaises;
+      if (paises.isNotEmpty) pais = paises.first;
+
+      cantones = fetchedCantones;
+      if (cantones.isNotEmpty) canton = cantones.first;
+
+      colores = fetchedColores;
+      if (colores.isNotEmpty) color = colores.first;
+
+      personas = fetchedPersonas;
+      if (personas.isNotEmpty) persona = personas.first;
+
+      tipos = fetchedTipos;
+      if (tipos.isNotEmpty) tipo = tipos.first;
+
+      tiposServicio = fetchedTiposServicio;
+      if (tiposServicio.isNotEmpty) tipoServicio = tiposServicio.first;
+
+      tiposTransaccion = fetchedTiposTransaccion;
+      if (tiposTransaccion.isNotEmpty) tipoTransaccion = tiposTransaccion.first;
+    });
+  }
+
+  Future<List<String>> fetchFeatures(String feature) async {
+    try {
+      final url = Uri.parse('http://127.0.0.1:5000/unique_values/$feature');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data is Map<String, dynamic> && data.containsKey('unique_values')) {
+          return (data['unique_values'] as List<dynamic>).cast<String>();
+        } else {
+          throw Exception('La respuesta no contiene la clave "unique_values"');
+        }
+      } else {
+        throw Exception('Error al obtener los valores de $feature');
+      }
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
+  }
+
+  Future<List<String>> fetchModels(String brand) async {
+    try {
+      final url = Uri.parse('http://127.0.0.1:5000/models/$brand');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.cast<String>(); // Convierte a una lista de cadenas
+      } else {
+        throw Exception('Error al obtener los modelos para la marca $brand');
+      }
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
+  }
+
+  Future<void> updateModels(String brand) async {
+    final fetchedModelos = await fetchModels(brand);
+    setState(() {
+      modelos = fetchedModelos;
+      if (modelos.isNotEmpty) modelo = modelos.first;
+    });
+  }
 
   String? _validateFechaCompra() {
     if (fechaCompra == null) {
@@ -50,43 +168,71 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
     return null;
   }
 
-  void sendCarDetails() {
+  Future<num> fetchPrediction(List<dynamic> features) async {
+    final url = Uri.parse('http://127.0.0.1:5000/predict');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'features': features}),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      return jsonResponse['prediction'][0];
+    } else {
+      throw Exception('Error al obtener predicción');
+    }
+  }
+
+  Future<void> sendCarDetails() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       setState(() {
         car = Car(
-          brand: marca,
-          model: modelo,
-          year: anio,
-          gasType: combustible,
-          classType: clase,
-          canton: canton,
-          country: pais,
-          color: color,
-          persona: persona,
-          tipo: tipo,
-          tipoServicio: tipoServicio,
-          tipoTransaccion: tipoTransaccion,
+          brand: marca!,
+          model: modelo!,
+          year: anio!,
+          gasType: combustible!,
+          classType: clase!,
+          canton: canton!,
+          country: pais!,
+          color: color!,
+          persona: persona!,
+          tipo: tipo!,
+          tipoServicio: tipoServicio!,
+          tipoTransaccion: tipoTransaccion!,
           fechaCompra: fechaCompra!,
           cilindraje: cilindraje,
         );
       });
 
-      print('Cilindraje: ${car!.cilindraje}');
-      print('Marca: ${car!.brand}');
-      print('Modelo: ${car!.model}');
-      print('Año: ${car!.year}');
-      print('Tipo de Combustible: ${car!.gasType}');
-      print('Clase: ${car!.classType}');
-      print('Cantón: ${car!.canton}');
-      print('País: ${car!.country}');
-      print('Color: ${car!.color}');
-      print('Tipo de Persona: ${car!.persona}');
-      print('Tipo: ${car!.tipo}');
-      print('Tipo de Servicio: ${car!.tipoServicio}');
-      print('Tipo de Transacción: ${car!.tipoTransaccion}');
-      print('Fecha de Compra: ${car!.fechaCompra}');
+      final features = [
+        car!.cilindraje,
+        car!.brand,
+        car!.model,
+        car!.year,
+        car!.gasType,
+        car!.classType,
+        car!.canton,
+        car!.country,
+        car!.color,
+        car!.persona,
+        car!.tipo,
+        car!.tipoServicio,
+        car!.tipoTransaccion,
+        car!.fechaCompra.toString(),
+      ];
+
+      try {
+        final prediction = await fetchPrediction(features);
+        print('Avalúo estimado: $prediction');
+        setState(() {
+          avaluoEstimado = prediction.toString();
+        });
+      } catch (e) {
+        print('Error: $e');
+      }
     }
   }
 
@@ -131,8 +277,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Marca'),
                   value: marca,
-                  items: ['Marca 1', 'Marca 2', 'Marca 3']
-                      .map((String value) => DropdownMenuItem(
+                  items: marcas.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -141,6 +286,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                     setState(() {
                       marca = value!;
                     });
+                    updateModels(value!);
                   },
                   onSaved: (value) => marca = value!,
                   validator: (value) => value == null || value.isEmpty
@@ -153,8 +299,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Modelo'),
                   value: modelo,
-                  items: ['Modelo 1', 'Modelo 2', 'Modelo 3']
-                      .map((String value) => DropdownMenuItem(
+                  items: modelos.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -175,8 +320,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Año Modelo'),
                   value: anio,
-                  items: ['2025', '2024', '2023']
-                      .map((String value) => DropdownMenuItem(
+                  items: anios.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -197,8 +341,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Clase'),
                   value: clase,
-                  items: ['Clase 1', 'Clase 2', 'Clase 3']
-                      .map((String value) => DropdownMenuItem(
+                  items: clases.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -220,8 +363,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                   decoration:
                       const InputDecoration(labelText: 'Tipo de Combustible'),
                   value: combustible,
-                  items: ['Gasolina', 'Diesel', 'Eléctrico']
-                      .map((String value) => DropdownMenuItem(
+                  items: combustibles.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -242,8 +384,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'País'),
                   value: pais,
-                  items: ['País 1', 'País 2', 'País 3']
-                      .map((String value) => DropdownMenuItem(
+                  items: paises.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -264,8 +405,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Cantón'),
                   value: canton,
-                  items: ['Cantón 1', 'Cantón 2', 'Cantón 3']
-                      .map((String value) => DropdownMenuItem(
+                  items: cantones.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -286,8 +426,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Color'),
                   value: color,
-                  items: ['Color 1', 'Colorn 2', 'Color 3']
-                      .map((String value) => DropdownMenuItem(
+                  items: colores.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -309,8 +448,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                   decoration:
                       const InputDecoration(labelText: 'Tipo de Persona'),
                   value: persona,
-                  items: ['Tipo Persona 1', 'Tipo Persona 2']
-                      .map((String value) => DropdownMenuItem(
+                  items: personas.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -331,8 +469,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Tipo'),
                   value: tipo,
-                  items: ['Tipo 1', 'Tipo 2']
-                      .map((String value) => DropdownMenuItem(
+                  items: tipos.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -353,8 +490,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Tipo Servicio'),
                   value: tipoServicio,
-                  items: ['Tipo Servicio 1', 'Tipo Servicio 2']
-                      .map((String value) => DropdownMenuItem(
+                  items: tiposServicio.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -376,8 +512,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                   decoration:
                       const InputDecoration(labelText: 'Tipo Transacción'),
                   value: tipoTransaccion,
-                  items: ['Tipo Transacción 1', 'Tipo Transacción 2']
-                      .map((String value) => DropdownMenuItem(
+                  items: tiposTransaccion.map((String value) => DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           ))
@@ -430,24 +565,32 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
                 ),
               ),
               const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        fechaCompraError = _validateFechaCompra();
-                      });
-                      sendCarDetails();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: primaryColor,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: SizedBox(
+                      width: 200,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            fechaCompraError = _validateFechaCompra();
+                          });
+                          sendCarDetails();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor: primaryColor,
+                        ),
+                        child: const Text('Valuar Vehículo'),
+                      ),
                     ),
-                    child: const Text('Valuar Vehículo'),
                   ),
-                ),
+                  const SizedBox(width: 16),
+                  const Text('Avalúo Estimado: \$'),
+                  Text(avaluoEstimado),
+                ],
               ),
             ],
           ),
