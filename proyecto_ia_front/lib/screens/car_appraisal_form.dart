@@ -28,7 +28,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
   List<String> tipos = [];
   List<String> tiposServicio = [];
   List<String> tiposTransaccion = [];
-  
+
   Car? car;
   String? marca;
   String? modelo;
@@ -260,309 +260,348 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: cilindrajeController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Cilindraje',
-                  ),
-                  validator: _validateCilindraje,
-                  onSaved: (value) => cilindraje = int.parse(value!),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Marca'),
-                  value: marca,
-                  items: marcas.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      marca = value!;
-                    });
-                    updateModels(value!);
-                  },
-                  onSaved: (value) => marca = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona una marca'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Modelo'),
-                  value: modelo,
-                  items: modelos.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      modelo = value!;
-                    });
-                  },
-                  onSaved: (value) => modelo = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un modelo'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Año Modelo'),
-                  value: anio,
-                  items: anios.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      anio = value!;
-                    });
-                  },
-                  onSaved: (value) => anio = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un año modelo'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Clase'),
-                  value: clase,
-                  items: clases.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      clase = value!;
-                    });
-                  },
-                  onSaved: (value) => clase = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona una clase'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Tipo de Combustible'),
-                  value: combustible,
-                  items: combustibles.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      combustible = value!;
-                    });
-                  },
-                  onSaved: (value) => combustible = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un tipo de combustible'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'País'),
-                  value: pais,
-                  items: paises.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      pais = value!;
-                    });
-                  },
-                  onSaved: (value) => pais = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un país'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Cantón'),
-                  value: canton,
-                  items: cantones.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      canton = value!;
-                    });
-                  },
-                  onSaved: (value) => canton = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un cantón'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Color'),
-                  value: color,
-                  items: colores.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      color = value!;
-                    });
-                  },
-                  onSaved: (value) => color = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un color'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Tipo de Persona'),
-                  value: persona,
-                  items: personas.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      persona = value!;
-                    });
-                  },
-                  onSaved: (value) => persona = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un tipo de persona'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Tipo'),
-                  value: tipo,
-                  items: tipos.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      tipo = value!;
-                    });
-                  },
-                  onSaved: (value) => tipo = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un tipo'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Tipo Servicio'),
-                  value: tipoServicio,
-                  items: tiposServicio.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      tipoServicio = value!;
-                    });
-                  },
-                  onSaved: (value) => tipoServicio = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un tipo de servicio'
-                      : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButtonFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Tipo Transacción'),
-                  value: tipoTransaccion,
-                  items: tiposTransaccion.map((String value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      tipoTransaccion = value!;
-                    });
-                  },
-                  onSaved: (value) => tipoTransaccion = value!,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Selecciona un tipo de transacción'
-                      : null,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Container(
-                  color: cardColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
                       children: [
-                        Text(
-                          fechaCompra != null
-                              ? 'Fecha de Compra: ${DateFormat('dd/MM/yyyy').format(fechaCompra!)}'
-                              : 'Fecha de Compra: No seleccionada',
-                        ),
-                        ElevatedButton(
-                          onPressed: () => _selectDate(context),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            backgroundColor: primaryColor,
-                          ),
-                          child: const Text('Seleccionar Fecha'),
-                        ),
-                        if (fechaCompraError != null)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              fechaCompraError!,
-                              style: const TextStyle(color: Colors.red),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: cilindrajeController,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              labelText: 'Cilindraje',
                             ),
+                            validator: _validateCilindraje,
+                            onSaved: (value) => cilindraje = int.parse(value!),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Marca'),
+                            value: marca,
+                            items: marcas
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                marca = value!;
+                              });
+                              updateModels(value!);
+                            },
+                            onSaved: (value) => marca = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona una marca'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Modelo'),
+                            value: modelo,
+                            items: modelos
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                modelo = value!;
+                              });
+                            },
+                            onSaved: (value) => modelo = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un modelo'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Año Modelo'),
+                            value: anio,
+                            items: anios
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                anio = value!;
+                              });
+                            },
+                            onSaved: (value) => anio = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un año modelo'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Clase'),
+                            value: clase,
+                            items: clases
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                clase = value!;
+                              });
+                            },
+                            onSaved: (value) => clase = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona una clase'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                                labelText: 'Tipo de Combustible'),
+                            value: combustible,
+                            items: combustibles
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                combustible = value!;
+                              });
+                            },
+                            onSaved: (value) => combustible = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un tipo de combustible'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'País'),
+                            value: pais,
+                            items: paises
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                pais = value!;
+                              });
+                            },
+                            onSaved: (value) => pais = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un país'
+                                : null,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Cantón'),
+                            value: canton,
+                            items: cantones
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                canton = value!;
+                              });
+                            },
+                            onSaved: (value) => canton = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un cantón'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Color'),
+                            value: color,
+                            items: colores
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                color = value!;
+                              });
+                            },
+                            onSaved: (value) => color = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un color'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                                labelText: 'Tipo de Persona'),
+                            value: persona,
+                            items: personas
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                persona = value!;
+                              });
+                            },
+                            onSaved: (value) => persona = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un tipo de persona'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Tipo'),
+                            value: tipo,
+                            items: tipos
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                tipo = value!;
+                              });
+                            },
+                            onSaved: (value) => tipo = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un tipo'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                                labelText: 'Tipo Servicio'),
+                            value: tipoServicio,
+                            items: tiposServicio
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                tipoServicio = value!;
+                              });
+                            },
+                            onSaved: (value) => tipoServicio = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un tipo de servicio'
+                                : null,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                                labelText: 'Tipo Transacción'),
+                            value: tipoTransaccion,
+                            items: tiposTransaccion
+                                .map((String value) => DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                tipoTransaccion = value!;
+                              });
+                            },
+                            onSaved: (value) => tipoTransaccion = value!,
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Selecciona un tipo de transacción'
+                                : null,
+                          ),
+                        ),
+                        // const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Container(
+                            color: cardColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    fechaCompra != null
+                                        ? 'Fecha de Compra: ${DateFormat('dd/MM/yyyy').format(fechaCompra!)}'
+                                        : 'Fecha de Compra: No seleccionada',
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () => _selectDate(context),
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.black,
+                                      backgroundColor: primaryColor,
+                                    ),
+                                    child: const Text('Seleccionar Fecha'),
+                                  ),
+                                  if (fechaCompraError != null)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Text(
+                                        fechaCompraError!,
+                                        style:
+                                            const TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               Row(
