@@ -30,4 +30,23 @@ class Car {
     required this.tipoTransaccion,
     required this.fechaCompra,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'Cilindraje': cilindraje,
+      'Marca': brand,
+      'Modelo': model,
+      'Año': year,
+      'Tipo de Gasolina': gasType,
+      'Clase': classType,
+      'Cantón': canton,
+      'País': country,
+      'Color': color,
+      'Persona': persona,
+      'Tipo': tipo,
+      'Tipo de Servicio': tipoServicio,
+      'Tipo de Transacción': tipoTransaccion,
+      'Fecha de Compra': fechaCompra.toIso8601String(),
+    };
+  }
 }
