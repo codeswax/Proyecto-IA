@@ -1,4 +1,5 @@
 class Car {
+  final int cilindraje;
   final String brand;
   final String model;
   final String year;
@@ -12,9 +13,9 @@ class Car {
   final String tipoServicio;
   final String tipoTransaccion;
   final DateTime fechaCompra;
-  final int cilindraje;
 
   Car({
+    required this.cilindraje,
     required this.brand,
     required this.model,
     required this.year,
@@ -28,6 +29,5 @@ class Car {
     required this.tipoServicio,
     required this.tipoTransaccion,
     required this.fechaCompra,
-    required this.cilindraje,
   });
 }

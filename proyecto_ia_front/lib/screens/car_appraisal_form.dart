@@ -44,7 +44,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
   String? tipoTransaccion;
   DateTime? fechaCompra;
   String? fechaCompraError;
-  int cilindraje = 0;
+  int? cilindraje;
   final TextEditingController cilindrajeController = TextEditingController();
   String avaluoEstimado = '-';
 
@@ -168,7 +168,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
     return null;
   }
 
-  Future<num> fetchPrediction(List<dynamic> features) async {
+  Future<double> fetchPrediction(List<dynamic> features) async {
     final url = Uri.parse('http://127.0.0.1:5000/predict');
     final response = await http.post(
       url,
@@ -178,7 +178,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-      return jsonResponse['prediction'][0];
+      return double.parse(jsonResponse['prediction'][0].toStringAsFixed(2));
     } else {
       throw Exception('Error al obtener predicción');
     }
@@ -190,6 +190,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
 
       setState(() {
         car = Car(
+          cilindraje: cilindraje!,
           brand: marca!,
           model: modelo!,
           year: anio!,
@@ -203,7 +204,6 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
           tipoServicio: tipoServicio!,
           tipoTransaccion: tipoTransaccion!,
           fechaCompra: fechaCompra!,
-          cilindraje: cilindraje,
         );
       });
 
@@ -223,6 +223,21 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
         car!.tipoTransaccion,
         car!.fechaCompra.toString(),
       ];
+
+      print("Cilindraje: ${car!.cilindraje}");
+      print("Marca: ${car!.brand}");
+      print("Modelo: ${car!.model}");
+      print("Año: ${car!.year}");
+      print("Tipo de Combustible: ${car!.gasType}");
+      print("Clase: ${car!.classType}");
+      print("Cantón: ${car!.canton}");
+      print("País: ${car!.country}");
+      print("Color: ${car!.color}");
+      print("Tipo de Persona: ${car!.persona}");
+      print("Tipo: ${car!.tipo}");
+      print("Tipo de Servicio: ${car!.tipoServicio}");
+      print("Tipo de Transacción: ${car!.tipoTransaccion}");
+      print("Fecha de Compra: ${car!.fechaCompra}");
 
       try {
         final prediction = await fetchPrediction(features);
