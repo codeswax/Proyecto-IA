@@ -12,7 +12,7 @@ class CustomSectionCard extends StatelessWidget {
     required this.headerIcon,
     required this.headerTitle,
     required this.content,
-    this.color = cardColor, // Valor por defecto
+    this.color = cardColor,
   });
 
   @override
@@ -20,13 +20,13 @@ class CustomSectionCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        color: color, // Usa el color proporcionado o cardColor por defecto
+        color: color,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Row(
               children: [
                 Padding(

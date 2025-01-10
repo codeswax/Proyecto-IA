@@ -14,25 +14,13 @@ class CustomHeader extends StatelessWidget {
         color: cardColor,
         child: Row(
           children: [
-            if (!Responsive.isDesktop(context))
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  child: const Icon(Icons.menu, color: primaryColor, size: 30),
-                  onTap: () => Scaffold.of(context).openDrawer(),
-                ),
-              ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 30),
-                child: Text(
-                  headerTitle,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: primaryColor,
-                  ),
+              child: Text(
+                headerTitle,
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
                 ),
               ),
             ),

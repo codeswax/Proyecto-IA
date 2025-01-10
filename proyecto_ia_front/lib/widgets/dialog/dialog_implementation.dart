@@ -7,6 +7,7 @@ class DialogImplementation implements DialogService {
     if (!context.mounted) return;
     await showDialog<String>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Cargando...'),
         content: Row(
@@ -23,8 +24,29 @@ class DialogImplementation implements DialogService {
   }
 
   @override
-  Future<void> showExceptionDialog(BuildContext context, String exception) {
-    // TODO: implement showExceptionDialog
+  Future<void> showExceptionDialog(
+      BuildContext context, String exception) async {
+    if (!context.mounted) return;
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Error'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Icon(
+              Icons.error,
+              size: 20,
+              color: Colors.red[900],
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 10),
+              child: Text(exception),
+            ),
+          ],
+        ),
+      ),
+    );
     throw UnimplementedError();
   }
 }

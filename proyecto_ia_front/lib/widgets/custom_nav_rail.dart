@@ -13,25 +13,34 @@ class CustomNavRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double iconSize = 35.0;
+
     return NavigationRail(
       backgroundColor: cardColor,
       indicatorColor: primaryColor,
       selectedIndex: selectedScreen,
       onDestinationSelected: onDestinationSelected,
-      destinations: const [
+      destinations: [
         NavigationRailDestination(
           icon: Icon(
             Icons.car_rental,
-            size: 30,
+            size: iconSize,
           ),
-          label: Text('Valuar'),
+          label: const Text('Valuar'),
+        ),
+        NavigationRailDestination(
+          icon: Icon(
+            Icons.upload_file,
+            size: iconSize,
+          ),
+          label: const Text('Subir'),
         ),
         NavigationRailDestination(
           icon: Icon(
             Icons.history,
-            size: 30,
+            size: iconSize,
           ),
-          label: Text('Historial'),
+          label: const Text('Historial'),
         ),
       ],
       labelType: NavigationRailLabelType.all,
@@ -43,16 +52,13 @@ class CustomNavRail extends StatelessWidget {
       ),
       leading: const Column(
         children: [
-          SizedBox(
-            height: 10,
-          ),
-          Icon(
-            Icons.calculate_sharp,
-            size: 100,
-            color: primaryColor,
-          ),
-          SizedBox(
-            height: 10,
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Icon(
+              Icons.commute,
+              size: 120,
+              color: primaryColor,
+            ),
           ),
         ],
       ),

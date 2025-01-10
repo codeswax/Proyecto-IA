@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ia_front/models/car.dart';
+import 'package:proyecto_ia_front/screens/car_appraisal_files.dart';
 import 'package:proyecto_ia_front/util/responsive.dart';
 import 'package:proyecto_ia_front/widgets/custom_header.dart';
 import 'package:proyecto_ia_front/widgets/custom_nav_rail.dart';
@@ -32,36 +33,20 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = Responsive.isDesktop(context);
-    bool isMobile = Responsive.isMobile(context);
-    bool isTablet = Responsive.isTablet(context);
+    //bool isDesktop = Responsive.isDesktop(context);
+    // bool isMobile = Responsive.isMobile(context);
+    // bool isTablet = Responsive.isTablet(context);
 
     return Scaffold(
-      drawer: (isMobile || isTablet)
-          ? SizedBox(
-              width: 250,
-              child: CustomNavRail(
-                  selectedScreen: _selectedScreen,
-                  onDestinationSelected: _updateScreen),
-            )
-          : null,
       body: SafeArea(
         child: Row(
           children: [
-            if (isDesktop)
-              Expanded(
-                  flex: 2,
-                  child: CustomNavRail(
-                      selectedScreen: _selectedScreen,
-                      onDestinationSelected: _updateScreen)),
+            Expanded(
+                flex: 2,
+                child: CustomNavRail(
+                    selectedScreen: _selectedScreen,
+                    onDestinationSelected: _updateScreen)),
             Expanded(flex: 10, child: _buildScreen()),
-            // Expanded(
-            //   flex: 3,
-            //   child: CarAppraisalResults(
-            //     avaluoEstimado: _avaluoEstimado,
-            //     //car: _car,
-            //   ),
-            // )
           ],
         ),
       ),
@@ -83,6 +68,16 @@ class _MainScreenState extends State<MainScreen> {
           ],
         );
       case 1:
+        return const Column(
+          children: [
+            CustomHeader(headerTitle: 'Subir Catálogo'),
+            Expanded(
+              flex: 11,
+              child: CarAppraisalFiles(),
+            ),
+          ],
+        );
+      case 2:
         return const Column(
           children: [
             CustomHeader(headerTitle: 'Historial'),

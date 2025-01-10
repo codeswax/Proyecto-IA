@@ -13,6 +13,7 @@ class Car {
   final String tipoServicio;
   final String tipoTransaccion;
   final DateTime fechaCompra;
+  double? avaluo;
 
   Car({
     required this.cilindraje,
@@ -29,24 +30,27 @@ class Car {
     required this.tipoServicio,
     required this.tipoTransaccion,
     required this.fechaCompra,
+    this.avaluo,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'Cilindraje': cilindraje,
-      'Marca': brand,
-      'Modelo': model,
-      'Año': year,
-      'Tipo de Gasolina': gasType,
-      'Clase': classType,
-      'Cantón': canton,
-      'País': country,
-      'Color': color,
-      'Persona': persona,
-      'Tipo': tipo,
-      'Tipo de Servicio': tipoServicio,
-      'Tipo de Transacción': tipoTransaccion,
-      'Fecha de Compra': fechaCompra.toIso8601String(),
-    };
+  @override
+  String toString() {
+    return 'Car('
+        'cilindraje: $cilindraje, '
+        'brand: $brand, '
+        'model: $model, '
+        'year: $year, '
+        'gasType: $gasType, '
+        'classType: $classType, '
+        'canton: $canton, '
+        'country: $country, '
+        'color: $color, '
+        'persona: $persona, '
+        'tipo: $tipo, '
+        'tipoServicio: $tipoServicio, '
+        'tipoTransaccion: $tipoTransaccion, '
+        'fechaCompra: $fechaCompra, '
+        'avaluo: $avaluo'
+        ')';
   }
 }

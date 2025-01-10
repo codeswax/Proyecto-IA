@@ -84,6 +84,56 @@ def predict():
     prediction = model.predict(df_features)
     return jsonify({'prediction': prediction.tolist()})
 
+@app.route('/batch_predict', methods=['POST'])
+def batch_predict():
+    data = request.json
+    features_list = data['features'] 
+    
+    predictions = []
+
+    for features in features_list:
+        df_fecha = pd.DataFrame({
+            'FECHA COMPRA': [features[13]]
+        })
+        df_fecha['FECHA COMPRA'] = pd.to_datetime(df_fecha['FECHA COMPRA'])
+        try:
+            dia_del_anio_encoded = dict_dia_del_anio.loc[
+                dict_dia_del_anio['DIA_DEL_AÑO'] == str(df_fecha['FECHA COMPRA'].dt.dayofyear.values[0]),
+                'DIA_DEL_AÑO_encoded'
+            ].values[0]
+        except IndexError:
+            dia_del_anio_encoded = dict_dia_del_anio.loc[
+                dict_dia_del_anio['DIA_DEL_AÑO'] == 'OTRO',
+                'DIA_DEL_AÑO_encoded'
+            ].values[0]
+        df_features = pd.DataFrame({
+            'CILINDRAJE': [int(features[0])],
+            'MARCA_encoded': [dict_marca.loc[dict_marca['MARCA'] == features[1], 'MARCA_encoded'].values[0]],
+            'MODELO_encoded': [dict_modelo.loc[dict_modelo['MODELO'] == features[2], 'MODELO_encoded'].values[0]],
+            'CLASE_encoded': [dict_clase.loc[dict_clase['CLASE'] == features[5], 'CLASE_encoded'].values[0]],
+            'TIPO COMBUSTIBLE_encoded': [dict_tipo_combustible.loc[
+                dict_tipo_combustible['TIPO COMBUSTIBLE'] == features[4], 'TIPO COMBUSTIBLE_encoded'].values[0]],
+            'PAÍS_encoded': [dict_pais.loc[dict_pais['PAÍS'] == features[7], 'PAÍS_encoded'].values[0]],
+            'CANTÓN_encoded': [dict_canton.loc[
+                dict_canton['CANTÓN'] == features[6].strip(), 'CANTÓN_encoded'].values[0]],
+            'COLOR 1_encoded': [dict_color1.loc[dict_color1['COLOR 1'] == features[8], 'COLOR 1_encoded'].values[0]],
+            'DIA_DEL_AÑO_encoded': [dia_del_anio_encoded],
+            'PERSONA NATURAL - JURÍDICA_encoded': [dict_tipo_persona.loc[
+                dict_tipo_persona['PERSONA NATURAL - JURÍDICA'] == features[9], 'PERSONA NATURAL - JURÍDICA_encoded'
+            ].values[0]],
+            'TIPO_encoded': [dict_tipo.loc[dict_tipo['TIPO'] == features[10], 'TIPO_encoded'].values[0]],
+            'EDAD': [df_fecha['FECHA COMPRA'].dt.year.values[0] - int(features[3])],
+            'TIPO SERVICIO_encoded': [dict_tipo_servicio.loc[
+                dict_tipo_servicio['TIPO SERVICIO'] == features[11], 'TIPO SERVICIO_encoded'].values[0]],
+            'TIPO TRANSACCIÓN_encoded': [dict_tipo_transaccion.loc[
+                dict_tipo_transaccion['TIPO TRANSACCIÓN'] == features[12], 'TIPO TRANSACCIÓN_encoded'].values[0]],
+        })
+
+        prediction = model.predict(df_features)
+        predictions.append(prediction[0])
+    return jsonify({'predictions': predictions})
+
+
 @app.route('/')
 def hello_world():
     return 'Hola Mundo'

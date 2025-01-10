@@ -271,6 +271,12 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    cilindrajeController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
