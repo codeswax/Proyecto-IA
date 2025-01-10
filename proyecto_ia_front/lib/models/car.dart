@@ -33,24 +33,23 @@ class Car {
     this.avaluo,
   });
 
-  @override
-  String toString() {
-    return 'Car('
-        'cilindraje: $cilindraje, '
-        'brand: $brand, '
-        'model: $model, '
-        'year: $year, '
-        'gasType: $gasType, '
-        'classType: $classType, '
-        'canton: $canton, '
-        'country: $country, '
-        'color: $color, '
-        'persona: $persona, '
-        'tipo: $tipo, '
-        'tipoServicio: $tipoServicio, '
-        'tipoTransaccion: $tipoTransaccion, '
-        'fechaCompra: $fechaCompra, '
-        'avaluo: $avaluo'
-        ')';
+  Map<String, dynamic> toJson() {
+    return {
+      'Cilindraje': cilindraje,
+      'Marca': brand,
+      'Modelo': model,
+      'Año': year,
+      'Gasolina': gasType,
+      'Clase': classType,
+      'Canton': canton,
+      'Pais de Origen': country,
+      'Color': color,
+      'Persona': persona,
+      'Tipo': tipo,
+      'Tipo Servicio': tipoServicio,
+      'Tipo Transaccion': tipoTransaccion,
+      'Fecha de Compra': fechaCompra.toIso8601String(),
+      'Avaluo': avaluo,
+    };
   }
 }

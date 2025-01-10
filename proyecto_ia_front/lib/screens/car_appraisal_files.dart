@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:proyecto_ia_front/models/car.dart';
 import 'package:proyecto_ia_front/util/constants.dart';
 import 'package:proyecto_ia_front/util/csv_reader.dart';
+import 'package:proyecto_ia_front/util/pdf_generator.dart';
 import 'package:proyecto_ia_front/widgets/data_table/car_data_table.dart';
 import 'package:proyecto_ia_front/widgets/custom_section_card.dart';
 import 'package:proyecto_ia_front/widgets/dialog/dialog_implementation.dart';
@@ -22,8 +23,6 @@ class _CarAppraisalFilesState extends State<CarAppraisalFiles> {
   Uint8List? pickedFile;
   List<Car> carsData = [];
   final CSVReader csvReader = CSVReader();
-  final ScrollController horizontal = ScrollController(),
-      vertical = ScrollController();
 
   Future<List<double>> fetchPredictions(
       List<List<dynamic>> featuresList) async {
@@ -204,8 +203,9 @@ class _CarAppraisalFilesState extends State<CarAppraisalFiles> {
               child: const Text('Calcular avalúo'),
             ),
             ElevatedButton(
-              onPressed:
-                  carsData.any((car) => car.avaluo != null) ? () {} : null,
+              onPressed: carsData.any((car) => car.avaluo != null)
+                  ? () => pdfGenerator(carsData)
+                  : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 foregroundColor: backgroundColor,

@@ -30,17 +30,17 @@ class CustomNavRail extends StatelessWidget {
         ),
         NavigationRailDestination(
           icon: Icon(
-            Icons.upload_file,
-            size: iconSize,
-          ),
-          label: const Text('Subir'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(
             Icons.history,
             size: iconSize,
           ),
           label: const Text('Historial'),
+        ),
+        NavigationRailDestination(
+          icon: Icon(
+            Icons.upload_file,
+            size: iconSize,
+          ),
+          label: const Text('Subir'),
         ),
       ],
       labelType: NavigationRailLabelType.all,

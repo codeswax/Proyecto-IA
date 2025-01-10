@@ -43,29 +43,29 @@
 //     );
 //   }
 
-//   Widget _buildPriceContent() {
-//     return Center(
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           const Text(
-//             'El avalúo del vehículo es:',
-//             style: TextStyle(
-//               fontSize: 18,
-//             ),
-//           ),
-//           Text(
-//             avaluoEstimado.isNotEmpty ? '\$$avaluoEstimado' : '-',
-//             style: const TextStyle(
-//               fontSize: 30,
-//               fontWeight: FontWeight.bold,
-//               color: primaryColor,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
+  // Widget _buildPriceContent() {
+  //   return Center(
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         const Text(
+  //           'El avalúo del vehículo es:',
+  //           style: TextStyle(
+  //             fontSize: 18,
+  //           ),
+  //         ),
+  //         Text(
+  //           avaluoEstimado.isNotEmpty ? '\$$avaluoEstimado' : '-',
+  //           style: const TextStyle(
+  //             fontSize: 30,
+  //             fontWeight: FontWeight.bold,
+  //             color: primaryColor,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
 //   Widget _buildEmptyContent() {
 //     return const Column(

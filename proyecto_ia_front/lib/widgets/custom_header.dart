@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ia_front/util/constants.dart';
-import 'package:proyecto_ia_front/util/responsive.dart';
 
 class CustomHeader extends StatelessWidget {
   final String headerTitle;

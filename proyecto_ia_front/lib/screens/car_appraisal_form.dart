@@ -246,6 +246,7 @@ class _CarAppraisalFormState extends State<CarAppraisalForm> {
         print('Avalúo estimado: $prediction');
         setState(() {
           avaluoEstimado = prediction.toString();
+          car!.avaluo = prediction;
         });
 
         widget.onAvaluoCalculated(prediction.toString(), car!);
