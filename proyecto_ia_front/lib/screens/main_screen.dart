@@ -14,6 +14,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedScreen = 0;
+  final List<Car> _carList = [];
   //String _avaluoEstimado = '';
   //Car? _car;
 
@@ -25,6 +26,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void _updateAvaluo(String nuevoAvaluo, Car nuevoCar) {
     setState(() {
+      _carList.add(nuevoCar);
       //_avaluoEstimado = nuevoAvaluo;
       //_car = nuevoCar;
     });
