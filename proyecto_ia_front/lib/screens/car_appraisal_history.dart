@@ -24,38 +24,26 @@ class CarAppraisalHistory extends StatelessWidget {
               "${car.brand} ${car.model} (${car.year}) - Avalúo: \$${car.avaluo}",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
-              "Cilindraje: ${car.cilindraje}, Combustible: ${car.gasType}, Color: ${car.color}",
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Cilindraje: ${car.cilindraje}, Combustible: ${car.gasType}, Color: ${car.color},  Fecha de Compra: ${car.fechaCompra}",
+                ),
+                Text(
+                  "Cantón: ${car.canton}, País: ${car.country}",
+                ),
+                Text(
+                  "Tipo: ${car.tipo}, Tipo Clase: ${car.cilindraje}, Tipo Persona: ${car.classType}, Tipo Servicio: ${car.tipoServicio}, Tipo Transacción: ${car.tipoTransaccion}",
+                ),
+              ],
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.picture_as_pdf, color: Colors.red),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Generar PDF'),
-                          content: const Text(
-                              'Esta funcionalidad está en desarrollo.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('Cerrar'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-                IconButton(
                   icon: const Icon(Icons.delete, color: Colors.grey),
-                  onPressed: () => onDelete(index), // Callback para eliminar
+                  onPressed: () => onDelete(index),
                 ),
               ],
             ),
