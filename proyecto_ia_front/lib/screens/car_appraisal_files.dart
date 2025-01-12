@@ -236,25 +236,26 @@ class _CarAppraisalFilesState extends State<CarAppraisalFiles> {
         pickedFile = res.files.single.bytes;
         fileName = res.files.single.name;
       });
-      if (context.mounted) {
-        DialogImplementation().showLoadingDialog(context, "Leyendo archivo");
-      }
       try {
+        if (context.mounted) {
+          DialogImplementation().showLoadingDialog(context, "Leyendo archivo");
+        }
         await Future.delayed(const Duration(seconds: 3));
         final cars = csvReader.parseCSV(pickedFile!);
         setState(() {
           carsData = cars;
+          Navigator.of(context).pop();
         });
       } catch (e) {
-        pickedFile = null;
-        fileName = null;
-        carsData.clear();
+        setState(() {
+          pickedFile = null;
+          fileName = null;
+          carsData.clear();
+        });
         if (context.mounted) {
-          DialogImplementation().showExceptionDialog(context, e.toString());
-        }
-      } finally {
-        if (context.mounted) {
+          String errorMessage = e.toString().replaceFirst('Exception: ', '');
           Navigator.of(context).pop();
+          DialogImplementation().showExceptionDialog(context, errorMessage);
         }
       }
     }

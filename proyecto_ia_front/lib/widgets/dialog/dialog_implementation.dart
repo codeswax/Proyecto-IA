@@ -47,6 +47,5 @@ class DialogImplementation implements DialogService {
         ),
       ),
     );
-    throw UnimplementedError();
   }
 }
