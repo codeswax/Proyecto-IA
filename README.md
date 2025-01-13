@@ -22,3 +22,9 @@
 
 3. Abrir la terminal en Frontend\gestion_citas y ejecutar el comando:
 - flutter run -d chrome --web-port=8080
+
+## Archivos para realizar pruebas
+- **proyecto_ia_front\df_test_10.csv**: Este archivo contiene 10 vehículos obtenidos del suconjunto de prueba.
+- **proyecto_ia_front\df_test_30.csv**: Este archivo contiene 30 vehículos obtenidos del suconjunto de prueba.
+- **proyecto_ia_front\df_test_1000.csv**: Este archivo contiene 1000 vehículos obtenidos del suconjunto de prueba.
+- **proyecto_ia_front\df_test_incompleto.csv**: Este archivo contiene 10 vehículos obtenidos del suconjunto de prueba, pero le falta la columna "TIPO TRANSACCIÓN". La finalidad de este archivo es verificar que el sistema valida la estructura del dataset e informa las columnas faltantes si tuviese.
