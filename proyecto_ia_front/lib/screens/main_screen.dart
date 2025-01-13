@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_ia_front/models/car.dart';
 import 'package:proyecto_ia_front/screens/car_appraisal_files.dart';
 import 'package:proyecto_ia_front/screens/car_appraisal_history.dart';
+import 'package:proyecto_ia_front/screens/feature_importance_screen.dart';
 import 'package:proyecto_ia_front/widgets/custom_header.dart';
 import 'package:proyecto_ia_front/widgets/custom_nav_rail.dart';
 import 'package:proyecto_ia_front/screens/car_appraisal_form.dart';
@@ -89,7 +90,16 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ],
         );
-
+      case 3:
+        return const Column(
+          children: [
+            CustomHeader(headerTitle: 'Importancia de Características'),
+            Expanded(
+              flex: 11,
+              child: FeatureImportancesScreen(),
+            ),
+          ],
+        );
       default:
         return Column(
           children: [

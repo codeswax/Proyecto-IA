@@ -16,6 +16,7 @@ dependencies:
   printing: ^5.9.0
   flutter_pdfview: 1.4.0
   path_provider: ^2.0.14
+  fl_chart: ^0.70.1
 
 dev_dependencies:
   flutter_test:

@@ -70,7 +70,7 @@ class _CarAppraisalFilesState extends State<CarAppraisalFiles> {
                   color: primaryColor,
                 ),
                 const Text(
-                  'Analiza varios carros.',
+                  'Analiza varios vehículos',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 36,

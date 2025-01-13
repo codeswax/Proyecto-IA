@@ -42,6 +42,13 @@ class CustomNavRail extends StatelessWidget {
           ),
           label: const Text('Subir'),
         ),
+        NavigationRailDestination(
+          icon: Icon(
+            Icons.format_list_numbered,
+            size: iconSize,
+          ),
+          label: const Text('Importancia de\nCaracterísticas'),
+        ),
       ],
       labelType: NavigationRailLabelType.all,
       selectedLabelTextStyle: const TextStyle(

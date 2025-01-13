@@ -23,6 +23,12 @@ dict_tipo_servicio = df2.loc[:, ["TIPO SERVICIO", "TIPO SERVICIO_encoded"]].drop
 dict_tipo_transaccion = df2.loc[:, ["TIPO TRANSACCIÓN", "TIPO TRANSACCIÓN_encoded"]].drop_duplicates().reset_index(drop=True)
 dict_dia_del_anio = df2.loc[:, ["DIA_DEL_AÑO", "DIA_DEL_AÑO_encoded"]].drop_duplicates().reset_index(drop=True)
 
+df_arbol = df2.loc[:,[
+   'CILINDRAJE','MARCA_encoded','MODELO_encoded','CLASE_encoded','TIPO COMBUSTIBLE_encoded',
+                'PAÍS_encoded','CANTÓN_encoded','COLOR 1_encoded','DIA_DEL_AÑO_encoded','PERSONA NATURAL - JURÍDICA_encoded',
+                'TIPO_encoded','EDAD','TIPO SERVICIO_encoded','TIPO TRANSACCIÓN_encoded'
+]].copy()
+
 app = Flask(__name__)
 CORS(app)
 
@@ -133,10 +139,21 @@ def batch_predict():
         predictions.append(prediction[0])
     return jsonify({'predictions': predictions})
 
+@app.route('/feature_importances', methods=['GET'])
+def feature_importances():
+    feature_importances = model.feature_importances_
+    feature_importances_dict = dict(zip(df_arbol.columns, feature_importances))
+    return jsonify(feature_importances_dict)
 
 @app.route('/')
-def hello_world():
-    return 'Hola Mundo'
+def show_routes():
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            'route': str(rule),
+            'methods': list(rule.methods)
+        })
+    return jsonify({'routes': routes})
 
 if __name__ == '__main__':
     app.run(debug=True)

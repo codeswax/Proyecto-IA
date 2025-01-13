@@ -27,11 +27,10 @@ class CSVReader {
       throw Exception('El archivo no contiene información.');
     }
 
-    final headers =
-        lines.first.split(',').map((h) => h.trim().toUpperCase()).toList();
-
-    if (!requiredColumns.every((col) => headers.contains(col))) {
-      throw Exception('Falta información necesaria.');
+    final headers = lines.first.split(',').map((h) => h.trim().toUpperCase()).toList();
+    final missingColumns = requiredColumns.where((col) => !headers.contains(col)).toList();
+    if (missingColumns.isNotEmpty) {
+      throw Exception('Falta información necesaria. Columnas faltantes: \n${missingColumns.join('\n')}');
     }
 
     List<Car> carsData = [];
